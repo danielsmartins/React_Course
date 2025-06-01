@@ -6,6 +6,7 @@ import Die from './Die'
 export default function App() {
 
     const [dice, setDice] = useState(() => generateAllnewDice()) // faz com que a função não seja chamada a cada renderização, perfomance.
+    const [rollCount, setRollCount] = useState(0)
     const gameWon = (dice.every(die => die.isHeld) && dice.every(die => die.value === dice[0].value))
     const newGameBtn = useRef(null)
 
@@ -35,8 +36,10 @@ export default function App() {
 function rollDice () {
     if (!gameWon) {
     setDice(prev => prev.map(die => die.isHeld ? die : {...die, value: Math.floor(Math.random() * 6) + 1}))
+    setRollCount(prev => prev + 1)
     } else {
         setDice(generateAllnewDice())
+        setRollCount(0)
     }
 }
     return (
@@ -47,6 +50,7 @@ function rollDice () {
         </div>
         <h1 className="title">Tenzies</h1>
         <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+        <p className="roll-counter">🎲 Rolls: {rollCount}</p>
         <div className="dice-container">
         {dice.map(element => <Die key={element.id} value={element.value} isHeld={element.isHeld} holdDice={() => hold(element.id)}/>)}
         </div>

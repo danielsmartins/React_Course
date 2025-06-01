@@ -76,6 +76,12 @@ main {
   cursor: pointer;
 }
 
+.roll-counter {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 .sr-only {
     position: absolute;
     width: 1px;
