@@ -3,6 +3,7 @@ import clsx from "clsx"
 import { languages } from "./data/languages"
 import { getFarewellText, getRandomWord } from './utils.js'
 import Confetti from 'react-confetti'
+import { useEffect } from "react" 
 
 export default function App() {
 
@@ -18,6 +19,28 @@ export default function App() {
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
   const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
    const numGuessesLeft = languages.length - 1
+
+useEffect(() => {
+  function handleKeyDown(event) {
+    const key = event.key.toLowerCase()
+
+    if (key === "enter" && isGameOver) {
+    startNewGame()
+    return
+}
+    if (isGameOver) return 
+
+    if (/^[a-z]$/.test(key)) {
+      addGuessedLetter(key)
+    }
+  }
+
+  window.addEventListener("keydown", handleKeyDown)
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown) 
+  }
+}, [guessedLetters, isGameOver])
 
   //static
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
